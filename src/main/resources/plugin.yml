@@ -1,0 +1,14 @@
+name: ESPR
+version: '${version}'
+main: moe.quill.espr.ESPR
+api-version: 1.17
+
+commands:
+  seltool:
+    description: ""
+  seladd:
+    description: ""
+  selrem:
+    description: ""
+  minecreate:
+    description: ""
