@@ -1,11 +1,14 @@
 package moe.quill.espr;
 
+import moe.quill.espr.core.engine.GameManager
+import moe.quill.espr.core.engine.commands.Gamestate
 import moe.quill.espr.core.mine.MineManager
 import moe.quill.espr.core.mine.mechanics.BlockPointSpawner
 import moe.quill.espr.core.mine.mechanics.minedata.MaterialData
 import moe.quill.espr.core.mine.mechanics.minedata.MineBase
 import moe.quill.espr.core.mine.mechanics.minedata.MineConfig
 import moe.quill.espr.core.mine.mechanics.minedata.MineDataStore
+import moe.quill.espr.core.teams.TeamManager
 import moe.quill.espr.core.utility.BossBars.BossBarListener
 import moe.quill.espr.core.utility.BossBars.BossBarManager
 import moe.quill.espr.devtools.select.SelectModule
@@ -31,12 +34,16 @@ class ESPR : JavaPlugin() {
 
         val selectModule = SelectModule(this)
         val mines = MineManager(this, selectModule)
-        val bossBarManager = BossBarManager();
+
+        val teamManager = TeamManager()
+        val bossBarManager = BossBarManager()
+        val gameManager = GameManager(this, bossBarManager, teamManager)
 
         registerListener(
             BossBarListener(bossBarManager),
             BlockPointSpawner(this, mines.dataStore)
         )
+        getCommand("gamestate")?.setExecutor(Gamestate(gameManager))
 
     }
 
