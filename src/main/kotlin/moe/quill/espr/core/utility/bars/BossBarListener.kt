@@ -1,4 +1,4 @@
-package moe.quill.espr.core.utility.BossBars
+package moe.quill.espr.core.utility.bars
 
 import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener

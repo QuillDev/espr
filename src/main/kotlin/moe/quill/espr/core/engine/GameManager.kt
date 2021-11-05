@@ -1,10 +1,9 @@
 package moe.quill.espr.core.engine
 
 import moe.quill.espr.core.teams.TeamManager
-import moe.quill.espr.core.utility.BossBars.BossBarManager
-import moe.quill.espr.core.utility.BossBars.MatchTimer
+import moe.quill.espr.core.utility.bars.BossBarManager
+import moe.quill.espr.core.utility.bars.MatchTimer
 import moe.quill.espr.core.utility.Countdown
-import net.kyori.adventure.bossbar.BossBar
 import net.kyori.adventure.text.Component
 import net.kyori.adventure.text.format.NamedTextColor
 import org.bukkit.plugin.Plugin

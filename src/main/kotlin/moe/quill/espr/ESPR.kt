@@ -1,13 +1,16 @@
 package moe.quill.espr;
 
+import moe.quill.espr.core.MessageListener
+import moe.quill.espr.core.engine.GameManager
 import moe.quill.espr.core.mine.MineManager
 import moe.quill.espr.core.mine.mechanics.BlockPointSpawner
 import moe.quill.espr.core.mine.mechanics.minedata.MaterialData
 import moe.quill.espr.core.mine.mechanics.minedata.MineBase
 import moe.quill.espr.core.mine.mechanics.minedata.MineConfig
 import moe.quill.espr.core.mine.mechanics.minedata.MineDataStore
-import moe.quill.espr.core.utility.BossBars.BossBarListener
-import moe.quill.espr.core.utility.BossBars.BossBarManager
+import moe.quill.espr.core.teams.TeamManager
+import moe.quill.espr.core.utility.bars.BossBarListener
+import moe.quill.espr.core.utility.bars.BossBarManager
 import moe.quill.espr.devtools.select.SelectModule
 import moe.quill.espr.devtools.select.SelectionConfigData
 import moe.quill.espr.devtools.select.data.NamedSelection
@@ -17,9 +20,9 @@ import org.bukkit.event.Listener
 import org.bukkit.plugin.java.JavaPlugin
 
 class ESPR : JavaPlugin() {
-
     override fun onEnable() {
         logger.info("Starting $name!")
+
 
         ConfigurationSerialization.registerClass(SelectionConfigData::class.java)
         ConfigurationSerialization.registerClass(NamedSelection::class.java)
@@ -31,13 +34,18 @@ class ESPR : JavaPlugin() {
 
         val selectModule = SelectModule(this)
         val mines = MineManager(this, selectModule)
-        val bossBarManager = BossBarManager();
+        val bossBarManager = BossBarManager()
+
+        val teamManager = TeamManager()
+        val gameManager = GameManager(this, bossBarManager, teamManager)
 
         registerListener(
             BossBarListener(bossBarManager),
             BlockPointSpawner(this, mines.dataStore)
         )
 
+        server.messenger.registerIncomingPluginChannel(this, "BungeeCord", MessageListener(teamManager, gameManager))
+        server.messenger.registerOutgoingPluginChannel(this, "BungeeCord")
     }
 
     fun registerListener(vararg listener: Listener) {
