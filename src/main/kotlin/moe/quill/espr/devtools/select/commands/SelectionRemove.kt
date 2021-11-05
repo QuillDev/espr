@@ -18,7 +18,7 @@ class SelectionRemove(private val selectionModule: SelectModule) : CommandExecut
     ): Boolean {
         if (sender !is Player) return true
 
-        if (args.size < 1) {
+        if (args.isEmpty()) {
             sender.sendMessage(Component.text("You must specify a name"))
             return true
         }

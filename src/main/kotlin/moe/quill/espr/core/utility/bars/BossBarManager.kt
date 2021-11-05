@@ -1,4 +1,4 @@
-package moe.quill.espr.core.utility.BossBars
+package moe.quill.espr.core.utility.bars
 
 import net.kyori.adventure.bossbar.BossBar
 

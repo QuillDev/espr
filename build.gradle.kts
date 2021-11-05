@@ -32,6 +32,13 @@ dependencies {
 
 
 tasks {
+    shadowJar {
+        archiveClassifier.set("shadow")
+        manifest {
+            attributes["Main-Class"] = "moe.quill.espr.ESPR"
+
+        }
+    }
     jar {
         archiveClassifier.set("gamer")
         duplicatesStrategy = DuplicatesStrategy.EXCLUDE
