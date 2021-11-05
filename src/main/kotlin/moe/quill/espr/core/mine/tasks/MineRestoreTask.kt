@@ -8,7 +8,8 @@ import kotlin.random.Random
 
 class MineRestoreTask(private val mineManager: MineManager) : BukkitRunnable() {
     override fun run() {
-        mineManager.mineMap.values.forEach { mine ->
+
+        mineManager.mines.forEach { mine ->
             mine.selection.getBlocks().forEach block@{ block ->
                 if (block.type != Material.AIR) return@block
                 if (Random.nextDouble() < .8) return@block
@@ -16,8 +17,7 @@ class MineRestoreTask(private val mineManager: MineManager) : BukkitRunnable() {
                 for (player in Bukkit.getOnlinePlayers()) {
                     if (player.location.distance(block.location) < 2.1) return@block
                 }
-                block.type = mine.randomType()
-
+                block.type = mine.getRandomType()
             }
         }
     }

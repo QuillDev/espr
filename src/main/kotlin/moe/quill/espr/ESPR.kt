@@ -1,9 +1,11 @@
 package moe.quill.espr;
 
-import moe.quill.espr.core.mine.Mine
-import moe.quill.espr.core.mine.MineData
 import moe.quill.espr.core.mine.MineManager
 import moe.quill.espr.core.mine.mechanics.BlockPointSpawner
+import moe.quill.espr.core.mine.mechanics.minedata.MaterialData
+import moe.quill.espr.core.mine.mechanics.minedata.MineBase
+import moe.quill.espr.core.mine.mechanics.minedata.MineConfig
+import moe.quill.espr.core.mine.mechanics.minedata.MineDataStore
 import moe.quill.espr.devtools.select.SelectModule
 import moe.quill.espr.devtools.select.SelectionConfigData
 import moe.quill.espr.devtools.select.data.NamedSelection
@@ -19,14 +21,16 @@ class ESPR : JavaPlugin() {
 
         ConfigurationSerialization.registerClass(SelectionConfigData::class.java)
         ConfigurationSerialization.registerClass(NamedSelection::class.java)
-        ConfigurationSerialization.registerClass(Mine::class.java)
-        ConfigurationSerialization.registerClass(MineData::class.java)
-
+        ConfigurationSerialization.registerClass(MineBase::class.java)
+        ConfigurationSerialization.registerClass(MaterialData::class.java)
+        ConfigurationSerialization.registerClass(MineBase::class.java)
+        ConfigurationSerialization.registerClass(MineConfig::class.java)
+        ConfigurationSerialization.registerClass(MineDataStore::class.java)
 
         val selectModule = SelectModule(this)
         val mines = MineManager(this, selectModule)
 
-        registerListener(BlockPointSpawner(this))
+        registerListener(BlockPointSpawner(this, mines.dataStore))
     }
 
     fun registerListener(vararg listener: Listener) {
