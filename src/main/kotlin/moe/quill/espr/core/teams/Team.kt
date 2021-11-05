@@ -7,6 +7,7 @@ import org.bukkit.entity.Player
 import java.util.*
 
 open class Team(name: Component) : ForwardingAudience{
+    val uuids = listOf<UUID>()
     val playerMap = mutableMapOf<UUID, Player>()
 
     fun registerPlayer(player: Player) {

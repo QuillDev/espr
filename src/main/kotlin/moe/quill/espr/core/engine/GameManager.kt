@@ -1,14 +1,42 @@
 package moe.quill.espr.core.engine
 
-class GameManager {
+import moe.quill.espr.core.teams.TeamManager
+import moe.quill.espr.core.utility.BossBars.BossBarManager
+import moe.quill.espr.core.utility.BossBars.MatchTimer
+import moe.quill.espr.core.utility.Countdown
+import net.kyori.adventure.bossbar.BossBar
+import net.kyori.adventure.text.Component
+import net.kyori.adventure.text.format.NamedTextColor
+import org.bukkit.plugin.Plugin
+
+class GameManager(private val plugin: Plugin, private val bossBarManager: BossBarManager, private val teamManager: TeamManager) {
     private var state = GameState.WAITING
+    var startTime = 0L
 
     fun changeState(state: GameState){
         when(state){
             GameState.WAITING -> TODO()
-            GameState.STARTING -> TODO()
-            GameState.ACTIVE -> TODO()
-            GameState.ENDING -> TODO()
+            GameState.STARTING -> {
+                val countdown = Countdown(
+                    10000,
+                    Component.text("Game Starting soon!").color(NamedTextColor.YELLOW)
+                )
+                { changeState(GameState.ACTIVE) }.runTaskTimer(plugin,0,5)
+            }
+            GameState.ACTIVE -> {
+                val matchTimer = MatchTimer(
+                    bossBarManager,
+                    600000
+                ).runTaskTimer(plugin,0,20)
+                startTime = System.currentTimeMillis()
+                TODO("teleport teams to their spawns")
+            }
+            GameState.ENDING ->{
+                teamManager.teams.forEach(teamManager::removeTeam)
+                TODO("calculate and show the winning team")
+                TODO("remove the players from the server")
+
+            }
         }
     }
 }

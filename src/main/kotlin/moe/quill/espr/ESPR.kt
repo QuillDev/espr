@@ -6,6 +6,8 @@ import moe.quill.espr.core.mine.mechanics.minedata.MaterialData
 import moe.quill.espr.core.mine.mechanics.minedata.MineBase
 import moe.quill.espr.core.mine.mechanics.minedata.MineConfig
 import moe.quill.espr.core.mine.mechanics.minedata.MineDataStore
+import moe.quill.espr.core.utility.BossBars.BossBarListener
+import moe.quill.espr.core.utility.BossBars.BossBarManager
 import moe.quill.espr.devtools.select.SelectModule
 import moe.quill.espr.devtools.select.SelectionConfigData
 import moe.quill.espr.devtools.select.data.NamedSelection
@@ -29,8 +31,13 @@ class ESPR : JavaPlugin() {
 
         val selectModule = SelectModule(this)
         val mines = MineManager(this, selectModule)
+        val bossBarManager = BossBarManager();
 
-        registerListener(BlockPointSpawner(this, mines.dataStore))
+        registerListener(
+            BossBarListener(bossBarManager),
+            BlockPointSpawner(this, mines.dataStore)
+        )
+
     }
 
     fun registerListener(vararg listener: Listener) {
