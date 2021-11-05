@@ -16,10 +16,11 @@ import moe.quill.espr.core.utility.bars.BossBarManager
 import moe.quill.espr.devtools.select.SelectModule
 import moe.quill.espr.devtools.select.SelectionConfigData
 import moe.quill.espr.devtools.select.data.NamedSelection
-import moe.quill.feather.lib.structure.FeatherPlugin
 import org.bukkit.configuration.serialization.ConfigurationSerialization
+import org.bukkit.event.Listener
+import org.bukkit.plugin.java.JavaPlugin
 
-class ESPR : FeatherPlugin() {
+class ESPR : JavaPlugin() {
     override fun onEnable() {
         logger.info("Starting $name!")
 
@@ -49,5 +50,9 @@ class ESPR : FeatherPlugin() {
 
         server.messenger.registerIncomingPluginChannel(this, "BungeeCord", MessageListener(teamManager, gameManager))
         server.messenger.registerOutgoingPluginChannel(this, "BungeeCord")
+    }
+
+    fun registerListener(vararg listener: Listener) {
+
     }
 }
