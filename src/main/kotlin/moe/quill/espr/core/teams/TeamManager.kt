@@ -1,13 +1,14 @@
 package moe.quill.espr.core.teams
 
 class TeamManager {
-    val teams = mutableListOf<Team>()
+    val teams = mutableListOf<ScoredTeam>()
 
-    fun registerTeam(team: Team){
+    fun registerTeam(team: ScoredTeam){
         teams.add(team)
     }
 
-    fun removeTeam(team: Team){
+    fun removeTeam(team: ScoredTeam){
         teams.remove(team)
     }
+
 }
