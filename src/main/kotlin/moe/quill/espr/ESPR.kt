@@ -9,6 +9,7 @@ import moe.quill.espr.core.mine.mechanics.minedata.MineBase
 import moe.quill.espr.core.mine.mechanics.minedata.MineConfig
 import moe.quill.espr.core.mine.mechanics.minedata.MineDataStore
 import moe.quill.espr.core.teams.TeamManager
+import moe.quill.espr.core.utility.BlockDecayListener
 import moe.quill.espr.core.utility.BossBars.BossBarListener
 import moe.quill.espr.core.utility.BossBars.BossBarManager
 import moe.quill.espr.devtools.select.SelectModule
@@ -41,7 +42,8 @@ class ESPR : JavaPlugin() {
 
         registerListener(
             BossBarListener(bossBarManager),
-            BlockPointSpawner(this, mines.dataStore)
+            BlockPointSpawner(this, mines.dataStore),
+            BlockDecayListener()
         )
         getCommand("gamestate")?.setExecutor(Gamestate(gameManager))
 
