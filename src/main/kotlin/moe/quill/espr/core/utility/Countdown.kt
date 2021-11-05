@@ -1,11 +1,9 @@
 package moe.quill.espr.core.utility
 
-import moe.quill.feather.lib.lambda.FeatherRealtimeRunnable
 import net.kyori.adventure.text.Component
 import net.kyori.adventure.text.format.NamedTextColor
 import net.kyori.adventure.title.Title
 import org.bukkit.Bukkit
-import org.bukkit.plugin.Plugin
 import org.bukkit.scheduler.BukkitRunnable
 import java.time.Duration
 import kotlin.math.ceil
