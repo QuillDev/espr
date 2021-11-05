@@ -12,3 +12,6 @@ commands:
     description: ""
   minecreate:
     description: ""
+  gamestate:
+    description: "set the GameState to provided GameState or jsut get the current GameState"
+

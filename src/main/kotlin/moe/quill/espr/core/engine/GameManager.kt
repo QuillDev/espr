@@ -9,7 +9,7 @@ import net.kyori.adventure.text.format.NamedTextColor
 import org.bukkit.plugin.Plugin
 
 class GameManager(private val plugin: Plugin, private val bossBarManager: BossBarManager, private val teamManager: TeamManager) {
-    private var state = GameState.WAITING
+    var state = GameState.WAITING
     var startTime = 0L
 
     fun changeState(state: GameState){
@@ -38,4 +38,5 @@ class GameManager(private val plugin: Plugin, private val bossBarManager: BossBa
             }
         }
     }
+
 }
