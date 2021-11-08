@@ -3,9 +3,8 @@ package moe.quill.espr.core
 import com.google.common.io.ByteStreams
 import moe.quill.espr.core.engine.GameManager
 import moe.quill.espr.core.engine.GameState
-import moe.quill.espr.core.teams.ScoredTeam
+import moe.quill.espr.core.teams.Team
 import moe.quill.espr.core.teams.TeamManager
-import net.kyori.adventure.text.Component
 import org.bukkit.entity.Player
 import org.bukkit.plugin.messaging.PluginMessageListener
 import java.util.*
@@ -29,7 +28,7 @@ class MessageListener(private val teamManager: TeamManager, private val gameMana
                     val uuids = mutableListOf<UUID>()
                     try {
                         uuids.add(UUID.fromString(input.readUTF()))
-                        val team = ScoredTeam(Component.text("ASJGFIK"))
+                        val team = Team()
                         teamManager.registerTeam(team)
                     } catch (ignored: Exception) {
                     }

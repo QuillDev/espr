@@ -3,12 +3,14 @@ package moe.quill.espr;
 import moe.quill.espr.core.MessageListener
 import moe.quill.espr.core.engine.GameManager
 import moe.quill.espr.core.engine.commands.Gamestate
-import moe.quill.espr.core.mine.MineManager
+import moe.quill.espr.core.engine.scoreboard.ScoreboardManager
+import moe.quill.espr.core.mine.ConfigManager
 import moe.quill.espr.core.mine.mechanics.BlockPointSpawner
 import moe.quill.espr.core.mine.mechanics.minedata.MaterialData
 import moe.quill.espr.core.mine.mechanics.minedata.MineBase
-import moe.quill.espr.core.mine.mechanics.minedata.MineConfig
+import moe.quill.espr.core.mine.mechanics.minedata.GameConfig
 import moe.quill.espr.core.mine.mechanics.minedata.MineDataStore
+import moe.quill.espr.core.shops.ShopListener
 import moe.quill.espr.core.teams.TeamManager
 import moe.quill.espr.core.utility.BlockDecayListener
 import moe.quill.espr.core.utility.bars.BossBarListener
@@ -30,21 +32,22 @@ class ESPR : JavaPlugin() {
         ConfigurationSerialization.registerClass(MineBase::class.java)
         ConfigurationSerialization.registerClass(MaterialData::class.java)
         ConfigurationSerialization.registerClass(MineBase::class.java)
-        ConfigurationSerialization.registerClass(MineConfig::class.java)
+        ConfigurationSerialization.registerClass(GameConfig::class.java, "GameConfig")
         ConfigurationSerialization.registerClass(MineDataStore::class.java)
 
         val selectModule = SelectModule(this)
-        val mines = MineManager(this, selectModule)
-
+        val config = ConfigManager(this, selectModule)
 
         val bossBarManager = BossBarManager()
-        val teamManager = TeamManager()
+        val boardManager = ScoreboardManager(this)
+        val teamManager = TeamManager(boardManager)
         val gameManager = GameManager(this, bossBarManager, teamManager)
 
         registerListener(
             BossBarListener(bossBarManager),
-            BlockPointSpawner(this, mines.dataStore),
-            BlockDecayListener()
+            BlockPointSpawner(this, config.dataStore, teamManager),
+            BlockDecayListener(),
+            ShopListener(this, config, teamManager)
         )
         getCommand("gamestate")?.setExecutor(Gamestate(gameManager))
 
@@ -53,6 +56,6 @@ class ESPR : JavaPlugin() {
     }
 
     fun registerListener(vararg listener: Listener) {
-
+        listener.forEach { server.pluginManager.registerEvents(it, this) }
     }
 }

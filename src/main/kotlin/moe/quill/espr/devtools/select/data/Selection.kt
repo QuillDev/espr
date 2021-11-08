@@ -3,6 +3,7 @@ package moe.quill.espr.devtools.select.data
 import org.bukkit.Location
 import org.bukkit.block.Block
 import org.bukkit.configuration.serialization.ConfigurationSerializable
+import kotlin.math.max
 
 open class Selection(loc1: Location, loc2: Location) : ConfigurationSerializable {
 
@@ -18,6 +19,16 @@ open class Selection(loc1: Location, loc2: Location) : ConfigurationSerializable
         loc1.blockY.coerceAtLeast(loc2.blockY).toDouble(),
         loc1.blockZ.coerceAtLeast(loc2.blockZ).toDouble()
     )
+
+    /**
+     * Check if the given location is within these bounds
+     * @param location to check if it's within these bounds
+     */
+    fun isInBounds(location: Location): Boolean {
+        return ((minLoc.x <= location.x && location.x <= maxLoc.x)
+                && (minLoc.y <= location.y && location.y <= maxLoc.y)
+                && (minLoc.z <= location.z && location.z <= maxLoc.z))
+    }
 
     fun getBlocks(): List<Block> {
         val blocks = arrayListOf<Block>()

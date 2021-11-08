@@ -2,24 +2,37 @@ package moe.quill.espr.core.teams
 
 import net.kyori.adventure.audience.Audience
 import net.kyori.adventure.audience.ForwardingAudience
-import net.kyori.adventure.text.Component
+import org.bukkit.Bukkit
 import org.bukkit.entity.Player
 import java.util.*
 
-open class Team(name: Component) : ForwardingAudience{
-    val uuids = listOf<UUID>()
-    val playerMap = mutableMapOf<UUID, Player>()
+class Team : ForwardingAudience {
 
-    fun registerPlayer(player: Player) {
-        playerMap[player.uniqueId] = player
+    //Members
+    val members = hashSetOf<UUID>()
+
+    //Scoring
+    var score = 0
+    var points = 0
+
+    //Upgrade Tiers
+    var pickTier = 1
+    var qualityTier = 1
+    var drillTier = 1
+
+    fun onlineMembers(): List<Player> {
+        return members.mapNotNull { Bukkit.getPlayer(it) }
     }
 
-    fun removePlayer(player: Player) {
-        playerMap.remove(player.uniqueId)
+    fun modifyPoints(amount: Int) {
+        points += amount
+
+        if (amount > 0) {
+            score += amount
+        }
     }
 
     override fun audiences(): MutableIterable<Audience> {
-        return playerMap.values
+        return onlineMembers().toMutableList()
     }
-
 }

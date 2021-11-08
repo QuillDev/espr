@@ -6,28 +6,38 @@ import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer
 import org.bukkit.Bukkit
 import org.bukkit.ChatColor
 import org.bukkit.entity.Player
+import org.bukkit.scoreboard.DisplaySlot
 import org.bukkit.scoreboard.Objective
 import org.bukkit.scoreboard.Scoreboard
+import java.util.*
 
-class ESPRBoard(private val title: Entry) {
+class MGScoreboard(private val title: Entry) {
 
     private val MAX_LINES = 15
 
     private val tools = ScoreboardTools()
 
     private val serializer = LegacyComponentSerializer.legacyAmpersand()
-    private val entries = mutableListOf<Entry>()
+    val entries = mutableListOf<Entry>()
     private val staleEntries = mutableListOf<Component>()
 
     private val bukkitBoard: Scoreboard = Bukkit.getScoreboardManager().newScoreboard
     private val objective: Objective = tools.registerObjective(bukkitBoard, "SB", "dummy", title.getComponent())
 
-    fun addPlayer(player: Player) {
-        player.scoreboard = bukkitBoard
+    val viewers = mutableSetOf<UUID>()
+
+    init {
+        objective.displaySlot = DisplaySlot.SIDEBAR
     }
 
-    fun addEntry(entry: Entry) {
-        entries.add(entry)
+    fun addViewer(uuid: UUID) {
+        viewers.add(uuid)
+        Bukkit.getPlayer(uuid)?.scoreboard = bukkitBoard
+    }
+
+    fun removePlayer(uuid: UUID) {
+        Bukkit.getPlayer(uuid)?.scoreboard = Bukkit.getScoreboardManager().newScoreboard
+        viewers.remove(uuid)
     }
 
     fun update() {
@@ -37,7 +47,7 @@ class ESPRBoard(private val title: Entry) {
             objective.displayName(freshTitle)
         }
 
-        for (idx in 0..entries.size) {
+        for (idx in 0 until entries.size) {
             val entry = entries[idx]
             val freshLine = entry.getComponent()
 
