@@ -1,11 +1,16 @@
 package moe.quill.espr.core.mine.mechanics.minedata
 
-import moe.quill.espr.core.mine.Mine
 import org.bukkit.Material
 import org.bukkit.configuration.serialization.ConfigurationSerializable
 
 //TODO: Load the data from some config file
-class MineConfig(val datastore: MineDataStore = MineDataStore(), val mineBases: List<MineBase> = listOf()) :
+class GameConfig(
+    val datastore: MineDataStore = MineDataStore(),
+    val mineBases: List<MineBase> = listOf(),
+    val pickaxeUpgradeZones: List<String> = listOf(),
+    val qualityUpgradeZones: List<String> = listOf(),
+    val drillUpgradeZones: List<String> = listOf()
+) :
     ConfigurationSerializable {
 
     override fun serialize(): MutableMap<String, Any> {
@@ -17,15 +22,18 @@ class MineConfig(val datastore: MineDataStore = MineDataStore(), val mineBases: 
 
     companion object {
         @JvmStatic
-        fun deserialize(map: Map<String, Any>): MineConfig {
-            return MineConfig(
+        fun deserialize(map: Map<String, Any>): GameConfig {
+            return GameConfig(
                 map["datastore"] as MineDataStore,
-                (map["mines"] as List<*>).filterIsInstance<MineBase>()
+                (map["mines"] as List<*>).filterIsInstance<MineBase>(),
+                (map["pick-upgrades"] as List<*>).filterIsInstance<String>(),
+                (map["quality-upgrades"] as List<*>).filterIsInstance<String>(),
+                (map["drill-upgrades"] as List<*>).filterIsInstance<String>()
             )
         }
 
-        fun defaultInstance(): MineConfig {
-            return MineConfig(
+        fun defaultInstance(): GameConfig {
+            return GameConfig(
                 //Data Store
                 MineDataStore(
                     mapOf(

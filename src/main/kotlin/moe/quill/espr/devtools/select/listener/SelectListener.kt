@@ -26,9 +26,6 @@ class SelectListener(private val selectModule: SelectModule) : Listener {
 
         val location = event.clickedBlock?.location ?: return
 
-
-        event.isCancelled = true
-
         when (event.action) {
             Action.LEFT_CLICK_BLOCK, Action.LEFT_CLICK_AIR -> {
                 player.sendMessage(

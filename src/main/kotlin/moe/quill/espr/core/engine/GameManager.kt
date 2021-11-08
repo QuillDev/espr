@@ -21,14 +21,17 @@ class GameManager(
         when (state) {
             GameState.WAITING -> TODO()
             GameState.STARTING -> {
-                val countdown = Countdown(
+
+                teamManager.teams.clear()
+
+                Countdown(
                     10000,
                     Component.text("Game Starting soon!").color(NamedTextColor.YELLOW)
                 )
                 { changeState(GameState.ACTIVE) }.runTaskTimer(plugin, 0, 5)
             }
             GameState.ACTIVE -> {
-                val matchTimer = MatchTimer(
+                MatchTimer(
                     bossBarManager,
                     600000
                 ).runTaskTimer(plugin, 0, 20)
@@ -36,26 +39,17 @@ class GameManager(
                 TODO("teleport teams to their spawns")
             }
             GameState.ENDING -> {
-                teamManager.teams.sortByDescending { it.pointTotal }
-                val winningTeam = teamManager.teams[0]
-                val losingTeam = teamManager.teams[1]
-                winningTeam.uuids.forEach{
-                    winningTeam.playerMap[it]?.showTitle(
-                        Title.title(Component.text("YOU WIN!").color(NamedTextColor.GREEN), Component.empty())
-                    )
-                }
-                losingTeam.uuids.forEach{
-                    winningTeam.playerMap[it]?.showTitle(
-                        Title.title(Component.text("YOU LOSE!").color(NamedTextColor.RED), Component.empty())
-                    )
-                }
+                TODO("FIX THE STUFF THAT SHOWS WHO WINS")
                 val countdown = Countdown(
                     10000,
                     Component.text("Returning to lobby.").color(NamedTextColor.YELLOW)
                 ) {
                     changeState(GameState.WAITING)
-                    teamManager.teams.forEach(teamManager::removeTeam)
+                    TODO("remove the new teams that dillon made and that im too dumb to understand")
+
                 }.runTaskTimer(plugin, 0, 5)
+                teamManager.teams.forEach { teamManager.teams -= it }
+                TODO("calculate and show the winning team")
                 TODO("remove the players from the server")
 
             }
@@ -63,3 +57,4 @@ class GameManager(
     }
 
 }
+

@@ -1,15 +1,15 @@
 package moe.quill.espr.core.mine.tasks
 
-import moe.quill.espr.core.mine.MineManager
+import moe.quill.espr.core.mine.ConfigManager
 import org.bukkit.Bukkit
 import org.bukkit.Material
 import org.bukkit.scheduler.BukkitRunnable
 import kotlin.random.Random
 
-class MineRestoreTask(private val mineManager: MineManager) : BukkitRunnable() {
+class MineRestoreTask(private val configManager: ConfigManager) : BukkitRunnable() {
     override fun run() {
 
-        mineManager.mines.forEach { mine ->
+        configManager.mines.forEach { mine ->
             mine.selection.getBlocks().forEach block@{ block ->
                 if (block.type != Material.AIR) return@block
                 if (Random.nextDouble() < .8) return@block
